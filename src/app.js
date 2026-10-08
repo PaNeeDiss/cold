@@ -109,7 +109,7 @@
     let content = section('我的生意账本', '不用懂会计，也能知道自己花了多少、卖了多少、赚了多少。');
     if (loadWarning) content += '<div class="notice notice-danger">' + html(loadWarning) + '</div>';
     content += '<section class="balance-hero"><div class="hero-copy"><span class="hero-kicker">现金回收情况</span><h2>' + status + '</h2><p>销售收款 − 全部进货款 − 销售手续费与运费 − 其他支出</p><div class="balance-number ' + (gap < 0 ? 'negative' : '') + '">' +
-      cash(gap) + '</div><div class="hero-caption">' + (gap >= 0 ? '目前现金回收差额为正；不代表全部库存已经卖完。' : '这是现金回收差额，不等于亏损。库存还有价值。') +
+      (gap > 0 ? '+' : '') + cash(gap) + '</div><div class="hero-caption">' + (gap >= 0 ? '目前现金回收差额为正；不代表全部库存已经卖完。' : '这是现金回收差额，不等于亏损。库存还有价值。') +
       '</div></div><div class="hero-mark" aria-hidden="true"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit-center">$</div></div></section>';
     content += '<div class="stat-grid">' +
       stat('进货总投入', cash(m.purchaseOutflow), '买入所有商品的钱，含采购运费', '', '↙') +
@@ -224,7 +224,7 @@
       field('name','这笔钱花在哪里？','text','maxlength="120" placeholder="例如：买包装盒"','',true) +
       '<label class="field"><span>支出类型</span><select name="category"><option>包装材料</option><option>交通</option><option>广告推广</option><option>仓储</option><option>其他</option></select></label>' +
       field('amount','一共花了多少钱（$）','number','min="0" step="0.01" placeholder="5.00"') +
-      field('date','支出日期','date','value="' + today() + '"');
+      field('date','支出日期','date','value="' + today() + '"') + '<div class="field wide"><small>已经填在进货或销售里的运费，不要在这里重复记账。</small></div>';
     $('#formFields').innerHTML = '<div class="form-grid">' + fields + '</div>';
     $('#entryDialog').showModal();
   }
