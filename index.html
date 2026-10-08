@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#0d1e23" />
+  <meta name="description" content="免费离线商品库存、进货、销售与净利润管理工具。" />
+  <title>算得清 · 库存与利润管理</title>
+  <link rel="stylesheet" href="src/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="主导航">
+      <div class="brand"><span class="brand-icon">算</span><div><strong>算得清</strong><small>RESALE LEDGER</small></div></div>
+      <div class="side-label">工作台</div>
+      <nav class="nav-list" id="navList">
+        <button class="nav-link active" data-nav="overview"><span class="nav-icon">◫</span>总览</button>
+        <button class="nav-link" data-nav="products"><span class="nav-icon">▤</span>商品库存</button>
+        <button class="nav-link" data-nav="ledger"><span class="nav-icon">⇄</span>交易流水</button>
+        <button class="nav-link" data-nav="analytics"><span class="nav-icon">▥</span>利润分析</button>
+      </nav>
+      <div class="side-bottom">
+        <div class="privacy-chip"><span class="live-dot"></span>数据仅保存在本机</div>
+        <div class="side-backup">
+          <strong>记得定期备份</strong>
+          <p>浏览器数据可能被清理。导出 JSON 文件，保护你的账本。</p>
+          <button class="side-export" data-action="export-json">导出备份 ↗</button>
+        </div>
+        <span class="side-version">v1.0 · 本地离线版</span>
+      </div>
+    </aside>
+    <div class="main-shell">
+      <header class="topbar">
+        <div class="breadcrumb">个人经营 / <strong id="crumb">总览</strong></div>
+        <div class="top-actions">
+          <span class="currency-pill">USD <span>·</span> 美元</span>
+          <button class="btn btn-soft hide-mobile" data-action="import-json">导入备份</button>
+          <button class="btn btn-main" data-action="add-sale"><span>＋</span> 记录销售</button>
+        </div>
+      </header>
+      <main id="view" class="content" aria-live="polite"></main>
+      <footer class="footer">算得清 © 2026 · FIFO 先进先出成本法 · 所有金额均为美元</footer>
+    </div>
+  </div>
+  <dialog id="entryDialog" class="entry-dialog" aria-labelledby="dialogTitle">
+    <div class="dialog-head"><div><span class="eyebrow" id="dialogEyebrow">新建记录</span><h2 id="dialogTitle"></h2></div><button class="close-button" data-action="close-dialog" aria-label="关闭">×</button></div>
+    <form id="entryForm" novalidate><div id="formFields"></div><div class="form-alert" id="formError" role="alert" hidden></div><div class="form-actions"><button type="button" class="btn btn-soft" data-action="close-dialog">取消</button><button class="btn btn-main" type="submit" id="submitText">保存记录</button></div></form>
+  </dialog>
+  <input type="file" id="importInput" accept=".json,application/json" hidden />
+  <div class="toast" role="status" id="toast"></div>
+  <script src="src/logic.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
