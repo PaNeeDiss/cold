@@ -1,0 +1,10 @@
+const test=require('node:test'),assert=require('node:assert/strict');const {calculate,money,integer}=require('../src/logic.js');const p={id:'p',name:'Shoe',sku:'S1'};const base={products:[p],transactions:[{id:'a',type:'purchase',productId:'p',quantity:2,unitCost:'100',freight:'2'},{id:'b',type:'purchase',productId:'p',quantity:2,unitCost:'140',freight:'0'},{id:'c',type:'sale',productId:'p',quantity:3,unitPrice:'200',fee:'12',shipping:'8'}]};
+test('FIFO across lots',()=>{const r=calculate(base);assert.equal(r.revenue,60000);assert.equal(r.cost,34200);assert.equal(r.profit,23800);assert.equal(r.inventory,14000);assert.equal(r.quantity,1)});
+test('empty ledger',()=>assert.equal(calculate({products:[],transactions:[]}).profit,0));
+test('oversell is rejected',()=>assert.throws(()=>calculate({...base,transactions:[...base.transactions,{type:'sale',productId:'p',quantity:2,unitPrice:'1'}]}),/库存不足/));
+test('missing product rejected',()=>assert.throws(()=>calculate({products:[],transactions:base.transactions}),/不存在/));
+test('invalid currency precision',()=>assert.throws(()=>money(1.234),/两位/));
+test('integer quantity required',()=>assert.throws(()=>integer(1.5),/整数/));
+test('freight allocation',()=>{const r=calculate({products:[p],transactions:[{type:'purchase',productId:'p',quantity:3,unitCost:'0',freight:'0.01'},{type:'sale',productId:'p',quantity:1,unitPrice:'1'}]});assert.equal(r.cost,1);assert.equal(r.inventory,0)});
+test('fees are deducted',()=>assert.equal(calculate(base).fees,1200));
+test('shipping deducted',()=>assert.equal(calculate(base).shipping,800));
